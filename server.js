@@ -139,7 +139,7 @@ app.get('/signout', (req, res) => {
 app.get('/compose', async (req, res) => {
     const compose = req.cookies.signin;
     if (!compose) {
-        return res.redirect('/');
+        return res.render('denied');
     }
     const [others] = await connection.query("SELECT * FROM users WHERE id != ?", compose);
     const [uname] = await connection.query("SELECT * FROM users WHERE id = ?", compose);
@@ -150,7 +150,7 @@ app.get('/compose', async (req, res) => {
 app.post('/compose', async (req, res) => {
     const compose = req.cookies.signin;
     if (!compose) {
-        return res.redirect('/');
+        return res.render('denied');
     }
     const [others] = await connection.query("SELECT * FROM users WHERE id != ?", compose);
     const { receiver, subject, body } = req.body;
@@ -169,7 +169,7 @@ app.post('/compose', async (req, res) => {
 app.get('/outbox', async (req, res) => {
     const outbox = req.cookies.signin;
     if (!outbox) {
-        return res.redirect('/');
+        return res.render('denied');
     }
     const [emails] = await connection.query("SELECT * FROM emails WHERE sender_id = ? AND senderDeleted = 0", outbox);
     const [uname] = await connection.query("SELECT * FROM users WHERE id = ?", outbox);
@@ -207,7 +207,7 @@ app.post('/outbox/delete/:emailId', async (req, res) => {
 app.get('/email/:emailId', async (req, res) => {
     const demail = req.cookies.signin;
     if (!demail) {
-        return res.redirect('/');
+        return res.render('denied');
     }
     const [uname] = await connection.query("SELECT * FROM users WHERE id = ?", demail);
 
