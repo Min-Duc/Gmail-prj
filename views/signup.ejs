@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign-up page</title>
+
+    <style>
+        body {
+            background-color: wheat;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 6px;
+        }
+
+        .headin {
+            text-decoration: underline;
+        }
+
+        .container {
+            background-color: azure;
+            width: 50%;
+            border: 5px solid black;
+            padding: auto;
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+            border-radius: 10%;
+        }
+
+        h3 {
+            text-align: left;
+            margin-left: 20%;
+            margin-bottom: 1px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 60%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 2px solid #4a4949;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px auto;
+            border: none;
+            cursor: pointer;
+            width: 35%;
+            font-size: medium;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        p {
+            font-size: large;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Create an account for Email System</h1>
+    <div class="container">
+        <h1 class="headin">Sign Up</h1> <br>
+
+        <% if ( typeof error !=='undefined' ) { %>
+            <span style="color: red;">
+                <%= error %>
+            </span>
+            <% } %>
+                <% if ( typeof success !=='undefined' ) { %>
+                    <a style="color: green;" href="/signin">
+                        <%= success %> 
+                    </a>
+                    <% } %>
+
+                        <form action="/signup" method="post">
+                            <h3>UserName:</h3>
+                            <div>
+                                <input type="text" name="fullName" placeholder="Enter your username" required>
+                            </div>
+                            <h3>Email:</h3>
+                            <div>
+                                <input type="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <h3>Password:</h3>
+                            <div>
+                                <input type="password" name="password"
+                                    placeholder="Enter your password (Minimun 7 characters)" required>
+                            </div>
+                            <h3>Confirm Password:</h3>
+                            <div>
+                                <input type="password" name="reEnterPassword" placeholder="Re-enter your password"
+                                    required>
+                            </div>
+                            <div class="form">
+                                <button type="submit">Sign Up</button>
+                            </div>
+                        </form>
+
+                        <p>Already have an account? <a href="/signin">Sign In</a></p>
+    </div>
+</body>
+
+</html>

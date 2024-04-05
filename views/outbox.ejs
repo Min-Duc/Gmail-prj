@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<script>
+    function del() {
+        const choose = document.querySelector(".dele:checked");
+        const emailId = choose.value;
+        fetch(`/outbox/delete/${emailId}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                emailId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    const refresh = choose.closest('tr');
+                    refresh.remove();
+                } else {
+                    console.log("SI");
+                }
+            })
+    }
+
+</script>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: column;
+    }
+
+    header {
+        background-color: rgb(255, 226, 172);
+        color: #000000;
+        padding: 0;
+        margin: auto 20px 10px 20px;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 10px;
+        font-size: xx-large;
+    }
+
+    .TheEmailPart {
+        background-color: whitesmoke;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: row;
+        border-radius: 10px;
+        margin: auto 20px auto 20px;
+    }
+
+    .emailContent {
+        flex: 1;
+        padding: 20px;
+
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fafafa;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+        bottom: 4%;
+        position: fixed;
+        left: 0;
+        right: 0;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #eee;
+        color: #333;
+    }
+
+    .pageNumbers {
+        display: inline;
+        margin-top: 10px;
+    }
+
+    .pageNumber {
+        text-align: center;
+        padding: 5px;
+        color: #313030;
+        border: 1px solid #c8c7c7;
+        border-radius: 3px;
+        background-color: #ece8e8;
+    }
+
+    .pageNumber:hover {
+        cursor: pointer;
+        background-color: #a59b9b;
+    }
+
+    .pageNumber.active {
+        font-weight: bold;
+        background-color: #313030;
+        color: #ffffff;
+    }
+
+    .arrow:hover {
+        cursor: pointer;
+        background-color: #e7e3e3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        height: 35px;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        padding-right: 40px;
+    }
+
+    .sub:hover {
+        background-color: rgb(255, 239, 233);
+        box-shadow: 0 2px 5px rgb(90, 90, 90);
+    }
+
+    button {
+        background-color: rgb(180, 180, 255);
+        width: 80px;
+        height: 40px;
+        align-self: flex-end;
+        margin: 5px 40px;
+        border-radius: 5px;
+        font-size: medium;
+    }
+
+    button:hover {
+        background-color: rgb(230, 86, 86);
+    }
+</style>
+
+<head>
+    <title>Outbox Page</title>
+</head>
+
+<body>
+
+    <%- include('heading'); -%>
+
+        <div class="TheEmailPart">
+
+            <%- include('sidebar'); -%>
+
+                <div class="emailContent">
+                    <h1>Outbox</h1>
+       
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th style="width:13%"><strong>To:</strong></th>
+                            <th style="width:17%"><strong>Subject:</strong></th>
+                            <th style="width:55%"><strong>Details:</strong></th>
+                            <th><strong>Received:</strong></th>
+                        </tr>
+
+
+                        <% emails.forEach(email=> { %>
+                            <tr class="sub"
+                                onclick="if(!event.target.matches('input[type=checkbox]')) location.href='/email/<%= email.id %>'">
+                                <td>
+                                    <input type="checkbox" class="dele" value="<%= email.id %>" />
+                                </td>
+                                <td>
+                                    <%= email.receiver %>
+                                </td>
+                                <td>
+                                    <%= email.subject %>
+                                </td>
+                                <td>
+                                    <%= email.body %>
+                                </td>
+                                <td>
+                                    <%= email.time %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </table>
+                </div>
+        </div>
+
+
+        <button onclick="del()">Delete</button>
+
+
+
+        <div class="pagination">
+            <!-- Go back -->
+            <% if (page> 1) { %>
+                <a href="/inbox?page=<%= page - 1 %>" class="arrow"> &#171; </a>
+                <% } else { %>
+                    <span> &#171; </span>
+                    <% } %>
+
+                        <!-- numbering -->
+                        <div class="pageNumbers">
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <a href="/inbox?page=<%= i %>" class="pageNumber<%= i === page ? ' active' : '' %>">
+                                    <%= i %>
+                                </a>
+                                <% } %>
+                        </div>
+
+                        <!-- Go next -->
+                        <% if (hasMore) { %>
+                            <a href="/inbox?page=<%= page + 1 %>" class="arrow"> &#187; </a>
+                            <% } else { %>
+                                <span> &#187; </span>
+                                <% } %>
+        </div>
+        </div>
+</body>
+
+</html>

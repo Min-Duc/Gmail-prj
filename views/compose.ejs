@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Compose Page</title>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: column;
+    }
+
+    .TheEmailPart {
+        background-color: whitesmoke;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: row;
+        border-radius: 10px;
+        margin: auto 20px auto 20px;
+    }
+
+    .input {
+        margin-top: 20px;
+    }
+
+    .Composer {
+        padding-left: 50px;
+        background-color: rgb(218, 238, 255);
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .sending {
+        padding: 15px;
+    }
+
+    input {
+        width: 20%;
+        height: auto;
+    }
+
+    textarea {
+        width: 65%;
+        height: 160px;
+        border-radius: 3px;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 7px;
+    }
+</style>
+
+<script>
+    function show() {
+        const tuy = document.getElementById('fr');
+        const t = new FormData(tuy);
+        t.forEach((value,key) =>{
+          console.log(`${key}: ${value}`);  
+        });
+    }
+</script>
+
+<body>
+
+    <%- include('heading'); -%>
+
+        <div class="TheEmailPart">
+
+            <%- include('sidebar'); -%>
+
+                <div class="Composer">
+                    <h1>Compose</h1>
+
+                    <% if ( typeof successMess !== 'undefined' ) { %>
+                        <span style="color: blue;">
+                            <%= successMess %>
+                        </span>
+                        <% } %>
+            
+
+                    <form id="fr" class="sending" action="/compose" method="POST">
+                        <label>To users: </label>
+
+                        <select id="receiver" name="receiver" required>
+
+                            <option value="" selected disabled>Select receiver</option>
+
+                            <% others.forEach(other=> { %>
+                                <option value="<%= other.id %>">
+                                    <%= other.full_name %>
+                                </option>
+                                <% }); %>
+
+                        </select>
+
+                        <div class="input">
+                            <label>Subject:</label>
+                            <input type="text" id="subject" name="subject" placeholder="Enter the subject" />
+                        </div>
+
+                        <div class="input">
+                            <textarea id="body" name="body" placeholder="Enter the body" rows="10" cols="50"></textarea>
+                        </div>
+
+                        <div class="input">
+                            <label for="file">File input:</label>
+                            <input type="file" id="file" name="file" />
+                        </div>
+
+                        <button type="submit" onclick="show()">Send</button>
+                    </form>
+
+                </div>
+        </div>
+</body>
+
+</html>

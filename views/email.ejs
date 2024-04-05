@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Email Details</title>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: column;
+    }
+
+    .TheEmailPart {
+        background-color: whitesmoke;
+        display: flex;
+        min-height: 60vh;
+        flex-direction: row;
+        border-radius: 10px;
+        margin: auto 20px auto 20px;
+    }
+
+    h2 {
+        padding: 35px;
+        margin-bottom: 0px;
+    }
+
+    .vivid-line {
+        height: 0.25px;
+        background-color: #afafaf;
+        width: 100%;
+    }
+
+    .detail {
+        border: 1px solid black;
+        margin-left: 35px;
+        margin-top: 20px;
+        border-radius: 10px;
+        width: 100%;
+        background-color: rgb(247, 234, 221);
+    }
+
+    .name {
+        margin-top: -20px;
+        margin-left: 35px;
+        font-size: large;
+    }
+
+    .mail {
+        margin-left: 10px;
+        color: gray;
+    }
+
+    .word {
+        margin-top: 35px;
+        margin-left: 70px;
+        margin-right: 150px;
+        font-size: larger;
+    }
+
+    .attachment {
+        margin-top: 70px;
+        margin-left: 70px;
+        width: auto;
+        font-size: large;
+    }
+
+    .attachment a {
+        text-decoration: none;
+    }
+
+    .attachment a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <%- include('heading'); -%>
+
+        <div class="TheEmailPart">
+
+            <%- include('sidebar'); -%>
+
+                <div class="detail">
+                    <h2>
+                        &nbsp; <%=Subject %>
+                            <hr class="vivid-line">
+                    </h2>
+                    <div class="name">
+                        <strong>From: </strong>
+                        <%=Sender %>.
+                            <sub class="mail">
+                                &lt; <%=Email %> &gt;
+                            </sub>
+                            <div>
+                                <strong>To:</strong>
+                                <%=Receiver %>.
+                                    <sub class="mail">
+                                        &lt; <%=toEmail %> &gt;
+                                    </sub>
+                            </div>
+                            <div class="word">
+                                <%=Body %>
+                            </div>
+                    </div>
+
+                    <div class="attachment">
+                        <% if (Attach) { %>
+                            <a href="<%= Attach %>" download> Download Attachment: " <%= Attach %> "</a>
+                            <% } %>
+                    </div>
+                </div>
+</body>
+
+</html>
